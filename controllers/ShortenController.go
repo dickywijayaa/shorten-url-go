@@ -5,6 +5,7 @@ import (
 	"../services"
 	"../helpers"
 
+	"net/http"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/go-playground/validator.v10"
 )
@@ -43,8 +44,8 @@ func (h *ShortenController) GetURLFromShortcode(ctx *gin.Context) {
 		return
 	}
 
-	response := h.helper.SuccessResponse(res, "success")
-	ctx.JSON(response.Code, response)
+	// redirect to url
+	ctx.Redirect(http.StatusMovedPermanently, res)
 	return
 }
 
@@ -68,7 +69,7 @@ func (h *ShortenController) PostShorten(ctx *gin.Context) {
 		return
 	}
 
-	response := h.helper.SuccessResponse(payload, err.Error())
+	response := h.helper.FailedResponse(payload, err.Error())
 	ctx.JSON(response.Code, response)
 	return
 }

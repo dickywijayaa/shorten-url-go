@@ -24,6 +24,17 @@ func (h *ResponseHelper) BadRequestResponse(data interface{}, message string) ob
 	return response
 }
 
+func (h *ResponseHelper) FailedResponse(data interface{}, message string) objects.Response {
+	response := objects.Response{
+		Code: http.StatusInternalServerError,
+		Data: data,
+		Message: message,
+		Status: "Failed",
+	}
+
+	return response
+}
+
 func (h *ResponseHelper) SuccessResponse(data interface{}, message string) objects.Response {
 	response := objects.Response{
 		Code: http.StatusOK,

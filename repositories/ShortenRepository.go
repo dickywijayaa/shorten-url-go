@@ -3,7 +3,7 @@ package repositories
 import (
 	"../database"
 	"../objects"
-	
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -26,7 +26,7 @@ func (r *ShortenRepository) GetURLFromCode(code string) (string, error) {
 }
 
 func (r *ShortenRepository) StoreShortcode(data objects.Shorten) (bool, error) {
-	query := r.DB.Table("shorten").Create(data)
+	query := r.DB.Table("shorten").Create(&data)
 	if err := query.Error; err != nil {
 		return false, err
 	}
