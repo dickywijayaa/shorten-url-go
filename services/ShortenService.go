@@ -4,6 +4,7 @@ import (
 	"../repositories"
 	"../objects"
 
+	"errors"
 	"time"
 )
 
@@ -25,6 +26,15 @@ func (s *ShortenService) FetchURLByCode(code string) (string, error) {
 }
 
 func (s *ShortenService) StoreShortenURL(url string, code string) (bool, error) {
+	countCheckURL, err := s.repository.CheckCodeExists(code)
+	if err != nil {
+		return false, err
+	}
+
+	if countCheckURL > 0 {
+		return false, errors.New("code already exists")
+	}
+
 	data := objects.Shorten{
 		URL: url,
 		Shortcode: code,

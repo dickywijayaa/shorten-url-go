@@ -33,3 +33,14 @@ func (r *ShortenRepository) StoreShortcode(data objects.Shorten) (bool, error) {
 
 	return true, nil
 }
+
+func (r *ShortenRepository) CheckCodeExists(code string) (int, error) {
+	var count int 
+	query := r.DB.Table("shorten").Where("shortcode=?", code).Count(&count)
+
+	if err := query.Error; err != nil {
+		return 0, err
+	}
+
+	return count, nil
+}
