@@ -2,8 +2,6 @@ package objects
 
 import (
 	"time"
-
-	_ "gopkg.in/go-playground/validator.v10"
 )
 
 type Shorten struct {
@@ -14,6 +12,6 @@ type Shorten struct {
 }
 
 type ShortenRequest struct {
-	URL			string 	`gorm:"url" json:"url" validate:"required"`
-	Shortcode	string	`gorm:"shortcode" json:"shortcode" validate:"required"`
+	URL			string 	`gorm:"url" json:"url"`
+	Shortcode	string	`gorm:"shortcode" json:"shortcode"`
 }

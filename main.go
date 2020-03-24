@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 	
-	"./controllers"
-	"./docs"
+	"github.com/dickywijayaa/shorten-url-go/controllers"
+	"github.com/dickywijayaa/shorten-url-go/docs"
 	
 	"github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"

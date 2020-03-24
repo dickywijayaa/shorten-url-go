@@ -1,7 +1,7 @@
 package helpers
 
 import (
-	"../objects"
+	"github.com/dickywijayaa/shorten-url-go/objects"
 
 	"net/http"
 )

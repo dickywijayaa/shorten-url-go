@@ -1,8 +1,8 @@
 package services
 
 import (
-	"../repositories"
-	"../objects"
+	"github.com/dickywijayaa/shorten-url-go/repositories"
+	"github.com/dickywijayaa/shorten-url-go/objects"
 
 	"errors"
 	"time"
@@ -25,14 +25,15 @@ func (s *ShortenService) FetchURLByCode(code string) (string, error) {
 	return result, err
 }
 
-func (s *ShortenService) StoreShortenURL(url string, code string) (bool, error) {
+func (s *ShortenService) StoreShortenURL(url string, code string) (objects.Shorten, error) {
+	var temp objects.Shorten
 	countCheckURL, err := s.repository.CheckCodeExists(code)
 	if err != nil {
-		return false, err
+		return temp, err
 	}
 
 	if countCheckURL > 0 {
-		return false, errors.New("code already exists")
+		return temp, errors.New("code already exists")
 	}
 
 	data := objects.Shorten{
@@ -42,5 +43,10 @@ func (s *ShortenService) StoreShortenURL(url string, code string) (bool, error) 
 	}
 
 	result, err := s.repository.StoreShortcode(data)
-	return result, err
+
+	if result == true {
+		return data, err
+	}
+
+	return temp, err
 }

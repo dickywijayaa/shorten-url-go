@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"../database"
-	"../objects"
+	"github.com/dickywijayaa/shorten-url-go/database"
+	"github.com/dickywijayaa/shorten-url-go/objects"
 
 	"github.com/jinzhu/gorm"
 )
