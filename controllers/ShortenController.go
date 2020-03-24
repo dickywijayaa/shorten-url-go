@@ -33,6 +33,18 @@ func ShortenControllerHandler(router *gin.Engine) {
 	group.POST("/", handler.PostShorten)
 }
 
+// godoc
+// @Summary Return Redirect to URL based on Shortcode
+// @Description Return Redirect to URL based on Shortcode stored in Database
+// @Tags Shorten
+// @Accept  json
+// @Produce  json
+// @Param shortcode path string true "shortcode"
+// @Success 200 {object} objects.Response
+// @Failure 400 {object} objects.Response
+// @Failure 401 {string} string "Unauthorized"
+// @Router /shorten/{shortcode} [get]
+// @Security BasicAuth
 func (h *ShortenController) GetURLFromShortcode(ctx *gin.Context) {
 	code := ctx.Param("shortcode")
 	if code == "" {
@@ -54,6 +66,18 @@ func (h *ShortenController) GetURLFromShortcode(ctx *gin.Context) {
 	return
 }
 
+// godoc
+// @Summary Store a shorten code for an URL
+// @Description Store a shorten code for an URL in database
+// @Tags Shorten
+// @Accept  json
+// @Produce  json
+// @Param payload body objects.ShortenRequest true "Add shorten"
+// @Success 200 {object} objects.Response
+// @Failure 400 {object} objects.Response
+// @Failure 401 {string} string "Unauthorized"
+// @Router /shorten [post]
+// @Security BasicAuth
 func (h *ShortenController) PostShorten(ctx *gin.Context) {
 	var payload objects.ShortenRequest 
 	ctx.BindJSON(&payload)
