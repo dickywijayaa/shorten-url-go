@@ -16,6 +16,11 @@ Here are some steps if you want to try this repository :
 
 6. fill the value at env with config as your settings
 
-7. after that, make sure to run : `swag init` so the docs will be generated
+7. dont forget to run the migrations in folder database/migrations to create the tables.
 
-8. finally run : `go run main.go` and visit localhost to make sure the server is running! :)
+8. after that, make sure to run : `swag init` so the docs will be generated
+
+9. finally run : `go run main.go` and visit localhost to make sure the server is running! :)
+
+## Contact
+dw_authorized@yahoo.co.id
