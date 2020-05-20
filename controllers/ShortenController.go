@@ -1,27 +1,28 @@
 package controllers
 
 import (
+	"github.com/dickywijayaa/shorten-url-go/helpers"
 	"github.com/dickywijayaa/shorten-url-go/objects"
 	"github.com/dickywijayaa/shorten-url-go/services"
-	"github.com/dickywijayaa/shorten-url-go/helpers"
 
+	"net/http"
 	"os"
 	"regexp"
-	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
 type ShortenController struct {
-	service services.ShortenService
+	service        services.ShortenService
 	responseHelper helpers.ResponseHelper
-	helper helpers.Helper
+	helper         helpers.Helper
 }
 
 func ShortenControllerHandler(router *gin.Engine) {
 	handler := ShortenController{
-		service: services.ShortenServiceHandler(),
+		service:        services.ShortenServiceHandler(),
 		responseHelper: helpers.ResponseHelperHandler(),
-		helper: helpers.HelperHandler(),
+		helper:         helpers.HelperHandler(),
 	}
 
 	group := router.Group("/shorten", gin.BasicAuth(gin.Accounts{
@@ -55,7 +56,7 @@ func (c *ShortenController) GetURLFromShortcode(ctx *gin.Context) {
 	res, err := c.service.FetchURLByCode(code)
 
 	if err != nil {
-		response := c.responseHelper.SuccessResponse(code, err.Error())
+		response := c.responseHelper.FailedResponse(code, err.Error())
 		ctx.JSON(response.Code, response)
 		return
 	}
@@ -78,7 +79,7 @@ func (c *ShortenController) GetURLFromShortcode(ctx *gin.Context) {
 // @Router /shorten [post]
 // @Security BasicAuth
 func (c *ShortenController) PostShorten(ctx *gin.Context) {
-	var payload objects.ShortenRequest 
+	var payload objects.ShortenRequest
 	ctx.BindJSON(&payload)
 
 	if payload.URL == "" {

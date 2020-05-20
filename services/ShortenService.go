@@ -1,8 +1,10 @@
 package services
 
 import (
-	"github.com/dickywijayaa/shorten-url-go/repositories"
+	"fmt"
+
 	"github.com/dickywijayaa/shorten-url-go/objects"
+	"github.com/dickywijayaa/shorten-url-go/repositories"
 
 	"errors"
 	"time"
@@ -21,8 +23,12 @@ func ShortenServiceHandler() ShortenService {
 }
 
 func (s *ShortenService) FetchURLByCode(code string) (string, error) {
-	result, err := s.repository.GetURLFromCode(code)
-	return result, err
+	result, err := s.repository.GetDetailsFromCode(code)
+	fmt.Println(err, result)
+	if err == nil && result.ID != 0 {
+		s.repository.UpdateLastSeen(result)
+	}
+	return result.URL, err
 }
 
 func (s *ShortenService) StoreShortenURL(url string, code string) (objects.Shorten, error) {
@@ -37,7 +43,7 @@ func (s *ShortenService) StoreShortenURL(url string, code string) (objects.Short
 	}
 
 	data := objects.Shorten{
-		URL: url,
+		URL:       url,
 		Shortcode: code,
 		CreatedAt: time.Now(),
 	}

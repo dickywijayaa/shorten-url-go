@@ -1,6 +1,8 @@
 CREATE TABLE IF NOT EXISTS shorten(
-	id serial PRIMARY KEY,
-	url VARCHAR (100) NOT NULL,
-	shortcode VARCHAR (100) NOT NULL,
-	created_at timestamp NOT NULL
- ); 
+	"id" SERIAL NOT NULL,
+    "url" varchar(100) NOT NULL,
+    "shortcode" varchar(100) NOT NULL,
+    "redirect_count" int2 DEFAULT 0 NOT NULL,
+    "created_at" timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    "last_seen_date" timestamp
+);

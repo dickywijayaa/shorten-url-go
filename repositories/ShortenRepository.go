@@ -1,6 +1,9 @@
 package repositories
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/dickywijayaa/shorten-url-go/database"
 	"github.com/dickywijayaa/shorten-url-go/objects"
 
@@ -18,11 +21,11 @@ func ShortenRepositoryHandler() ShortenRepository {
 	return handler
 }
 
-func (r *ShortenRepository) GetURLFromCode(code string) (string, error) {
+func (r *ShortenRepository) GetDetailsFromCode(code string) (objects.Shorten, error) {
 	var data objects.Shorten
-	query := r.DB.Table("shorten").Select("url").Where("shortcode=?", code).First(&data)
+	query := r.DB.Table("shorten").Select("*").Where("shortcode=?", code).First(&data)
 
-	return data.URL, query.Error
+	return data, query.Error
 }
 
 func (r *ShortenRepository) StoreShortcode(data objects.Shorten) (bool, error) {
@@ -35,7 +38,7 @@ func (r *ShortenRepository) StoreShortcode(data objects.Shorten) (bool, error) {
 }
 
 func (r *ShortenRepository) CheckCodeExists(code string) (int, error) {
-	var count int 
+	var count int
 	query := r.DB.Table("shorten").Where("shortcode=?", code).Count(&count)
 
 	if err := query.Error; err != nil {
@@ -43,4 +46,17 @@ func (r *ShortenRepository) CheckCodeExists(code string) (int, error) {
 	}
 
 	return count, nil
+}
+
+func (r *ShortenRepository) UpdateLastSeen(data objects.Shorten) {
+	current_date := time.Now()
+	data.RedirectCount = data.RedirectCount + 1
+	data.LastSeenDate = &current_date
+
+	query := r.DB.Table("shorten").Where("id = ?", data.ID).Update(data)
+	if err := query.Error; err != nil {
+		fmt.Println(err.Error())
+	}
+
+	return
 }
